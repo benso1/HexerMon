@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TurnBased : MonoBehaviour
+public class Move : MonoBehaviour
 {
-    public void StartBattle(Monster player, Monster enemy){
+    Move(){
         
     }
 }

@@ -15,11 +15,17 @@ public class Monster : MonoBehaviour
     public Sprite pic;
     public int type;
     public string nickname;
-    public Monster(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf){
+    public int level;
+    public int exp;
+    public Move[] moves;
+    public Monster(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl){
         SetGrowth(attackGrow, defenseGrow, hpGrow, speedGrow);
         nickname = nick;
         pic = picture;
         type = typeOf;
+        level = lvl;
+        exp = 0;
+        moves = new Move[4];
     }
     public int RandomNumber(){  
         Random random = new Random();  
@@ -37,6 +43,13 @@ public class Monster : MonoBehaviour
             attackGrowth = attackGrow + 1;
         }
 
+        if(attackGrowth < 1){
+            attackGrowth = 1;
+        }
+        else if(attackGrowth > 5){
+            attackGrowth = 5;
+        }
+
         rand = RandomNumber();
         if(rand < 70){
             defenseGrowth = defenseGrow;
@@ -46,6 +59,13 @@ public class Monster : MonoBehaviour
         }
         else{
             defenseGrowth = defenseGrow + 1;
+        }
+
+        if(defenseGrowth < 1){
+            defenseGrowth = 1;
+        }
+        else if(defenseGrowth > 5){
+            defenseGrowth = 5;
         }
 
         rand = RandomNumber();
@@ -59,6 +79,13 @@ public class Monster : MonoBehaviour
             hpGrowth = hpGrow + 1;
         }
 
+        if(hpGrowth < 1){
+            hpGrowth = 1;
+        }
+        else if(hpGrowth > 5){
+            hpGrowth = 5;
+        }
+
         rand = RandomNumber();
         if(rand < 70){
             speedGrowth = speedGrow;
@@ -69,5 +96,25 @@ public class Monster : MonoBehaviour
         else{
             speedGrowth = speedGrow + 1;
         }
+
+        if(speedGrowth < 1){
+            speedGrowth = 1;
+        }
+        else if(speedGrowth > 5){
+            speedGrowth = 5;
+        }
+    }
+    public void SetStats(){
+        attack = attackGrowth * level;
+        defense = defenseGrowth * level;
+        hp = hpGrowth * level;
+        speed = speedGrowth * level;
+    }
+    public void LevelUp(){
+        while(exp > (level * 2)){
+            exp -= (level * 2);
+            level += 1;
+        }
+        SetStats();
     }
 }
