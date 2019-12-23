@@ -27,12 +27,12 @@ public class Monster : MonoBehaviour
         exp = 0;
         moves = new Move[4];
     }
-    public int RandomNumber(){  
+    public int RandomNumber(int min, int max){  
         Random random = new Random();  
-        return Random.Range(0, 100);
+        return Random.Range(min, max);
     }
     public void SetGrowth(int attackGrow, int defenseGrow, int hpGrow, int speedGrow){
-        int rand = RandomNumber();
+        int rand = RandomNumber(0, 100);
         if(rand < 70){
             attackGrowth = attackGrow;
         }
@@ -50,7 +50,7 @@ public class Monster : MonoBehaviour
             attackGrowth = 5;
         }
 
-        rand = RandomNumber();
+        rand = RandomNumber(0, 100);
         if(rand < 70){
             defenseGrowth = defenseGrow;
         }
@@ -68,7 +68,7 @@ public class Monster : MonoBehaviour
             defenseGrowth = 5;
         }
 
-        rand = RandomNumber();
+        rand = RandomNumber(0, 100);
         if(rand < 70){
             hpGrowth = hpGrow;
         }
@@ -86,7 +86,7 @@ public class Monster : MonoBehaviour
             hpGrowth = 5;
         }
 
-        rand = RandomNumber();
+        rand = RandomNumber(0, 100);
         if(rand < 70){
             speedGrowth = speedGrow;
         }
@@ -116,5 +116,17 @@ public class Monster : MonoBehaviour
             level += 1;
         }
         SetStats();
+    }
+    public Move GetRandomMove(){
+        int i = 4;
+        int moveNum = RandomNumber(0, i);
+        while(moves[moveNum] == null && i > 0){
+            moveNum = RandomNumber(0, i);
+            i--;
+        }
+        if(i < 0){
+            return null;
+        }
+        return moves[moveNum];
     }
 }
