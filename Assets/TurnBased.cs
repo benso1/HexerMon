@@ -8,12 +8,15 @@ public class TurnBased : MonoBehaviour
     public Monster enemy;
     public Monster mon;
     public Player player;
-    public void StartBattle(Player playerChar, Monster enemyMon){
-        enemy = enemyMon;
+    public Player rival;
+    public void StartBattle(Player playerChar, Player enemyChar){
+        rival = enemyChar;
+        enemy = rival.NextMonster();
         player = playerChar;
-        mon = player.monsters[0];
-        while(enemyMon.hp > 0 && TakeTurn()){
-            playerTurn = !playerTurn;
+        mon = player.NextMonster();
+        SetTurnOrder(mon, enemy);
+        while(TakeTurn()){
+            //Display Battle
         }
     }
     public void SetTurnOrder(Monster playerMon, Monster enemyMon){
@@ -32,9 +35,30 @@ public class TurnBased : MonoBehaviour
             UseMove(enemy.GetRandomMove(), enemy, mon);
         }
 
-        if(player.NextAlive() == -1){
-            return false;
+        bool deceased = false;
+        if(mon.hp < 0){
+            if(player.NextAlive() == -1){
+                return false;
+            }
+            mon = player.NextMonster();
+            deceased = true;
         }
+
+        if(enemy.hp < 0){
+            if(rival.NextAlive() == -1){
+                return false;
+            }
+            enemy = rival.NextMonster();
+            deceased = true;
+        }
+
+        if(deceased){
+            SetTurnOrder(mon, enemy);
+        }
+        else{
+            playerTurn = !playerTurn;
+        }
+            
         return true;
     }
     public void UseMove(Move move, Monster good, Monster bad){
