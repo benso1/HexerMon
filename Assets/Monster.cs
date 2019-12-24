@@ -18,14 +18,14 @@ public class Monster : MonoBehaviour
     public int level;
     public int exp;
     public Move[] moves;
-    public Monster(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl){
+    public Monster(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl, Move[] moveSet){
         SetGrowth(attackGrow, defenseGrow, hpGrow, speedGrow);
         nickname = nick;
         pic = picture;
         type = typeOf;
         level = lvl;
         exp = 0;
-        moves = new Move[4];
+        moves = moveSet;
     }
     public int RandomNumber(int min, int max){  
         Random random = new Random();  
@@ -138,5 +138,9 @@ public class Monster : MonoBehaviour
     }
     public void TakeSelfDamage(float selfDamage){
         hp = (int)(hp - (hpGrowth * level * selfDamage));
+    }
+    public string Stats(){
+        string text = "Attack: " + attack +" Defense: " + defense + " Hp: " + hp + " Speed: " + speed;
+        return text;
     }
 }

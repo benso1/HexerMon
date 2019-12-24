@@ -9,14 +9,14 @@ public class TurnBased : MonoBehaviour
     public Monster mon;
     public Player player;
     public Player rival;
-    public void StartBattle(Player playerChar, Player enemyChar){
+    IEnumerable StartBattle(Player playerChar, Player enemyChar){
         rival = enemyChar;
         enemy = rival.NextMonster();
         player = playerChar;
         mon = player.NextMonster();
         SetTurnOrder(mon, enemy);
         while(TakeTurn()){
-            //Display Battle
+            yield return new WaitForSeconds(2f);
         }
     }
     public void SetTurnOrder(Monster playerMon, Monster enemyMon){
@@ -29,19 +29,21 @@ public class TurnBased : MonoBehaviour
     }
     public bool TakeTurn(){
         if(playerTurn){
-            //Get Move
+            Move monMove = mon.GetRandomMove();
+            monMove.UseMove(mon, enemy);
+            Debug.Log(player.nickname + "s Pokemon" + mon.nickname + " used " + monMove.name);
         }
         else{
-            enemy.GetRandomMove().UseMove(enemy, mon);
+            Move eneMove = enemy.GetRandomMove();
+            eneMove.UseMove(enemy, mon);
+            Debug.Log(rival.nickname + "s Pokemon" + enemy.nickname + " used " + eneMove.name);
         }
 
-        bool deceased = false;
         if(mon.hp < 0){
             if(player.NextAlive() == -1){
                 return false;
             }
             mon = player.NextMonster();
-            deceased = true;
         }
 
         if(enemy.hp < 0){
@@ -49,16 +51,13 @@ public class TurnBased : MonoBehaviour
                 return false;
             }
             enemy = rival.NextMonster();
-            deceased = true;
         }
-
-        if(deceased){
-            SetTurnOrder(mon, enemy);
-        }
-        else{
-            playerTurn = !playerTurn;
-        }
-            
+        Debug.Log("");
+        Debug.Log(player.nickname + "s Pokemon" + mon.nickname);
+        Debug.Log(mon.Stats());
+        Debug.Log(rival.nickname + "s Pokemon" + mon.nickname);
+        Debug.Log(enemy.Stats());
+        playerTurn = !playerTurn;
         return true;
     }
 }

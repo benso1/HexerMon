@@ -11,11 +11,12 @@ public class Move : MonoBehaviour
 		Kick = 3,
 		Splash = 4,
 		Stall = 5,
+        UltimateAnnihilation = 6
     }
     public int dmg;
     public float selfDmg;
     public int type;
-    Move(int typeOf){
+    public Move(int typeOf){
         dmg = 0;
         selfDmg = 0;
         type = typeOf;
@@ -46,6 +47,10 @@ public class Move : MonoBehaviour
                 dmg = 0;
                 selfDmg = 0;
                 MoveStats(.5f, 2, good);
+                break;
+            case ((int)MoveType.UltimateAnnihilation):
+                dmg = 4 * good.attack;
+                selfDmg = .45f;
                 break;
         }
         bad.TakeDamage(dmg);

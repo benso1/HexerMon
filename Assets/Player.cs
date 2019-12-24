@@ -6,9 +6,11 @@ public class Player : MonoBehaviour
 {
     public Monster[] monsters;
     public Sprite playerSprite;
-    Player(Sprite playerPic){
+    public string nickname;
+    Player(Sprite playerPic, string nick){
         playerSprite = playerPic;
         monsters = new Monster[6];
+        nickname = nick;
     }
     public bool AcquireMonster(Monster monstrous, int slot){
         if(slot < 6 && slot >= 0){
