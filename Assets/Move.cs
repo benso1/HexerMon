@@ -21,6 +21,11 @@ public class Move : MonoBehaviour
         selfDmg = 0;
         type = typeOf;
     }
+    public void AddStats(int typeOf){
+        dmg = 0;
+        selfDmg = 0;
+        type = typeOf;
+    }
     public void UseMove(Monster good, Monster bad){
         switch(type){
             case ((int)MoveType.Punch):

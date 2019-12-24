@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class World : MonoBehaviour
 {
-    void Start()
-    {
-        Player player = new Player(playerPic, "Red");
-        player.GetMon(CreateMon((int)Shape.Circle, 5));
+    void Start(){
+        //Debug.Log("Can Write");
+        Player player = gameObject.AddComponent(typeof(Player)) as Player;
+        player.AddStats(playerPic, "Red");
         player.GetMon(CreateMon((int)Shape.Triangle, 5));
         player.GetMon(CreateMon((int)Shape.Hexagon, 5));
-        Player rival = new Player(rivalPic, "Jerk");
+        //Debug.Log("Created Player");
+        Player rival = gameObject.AddComponent(typeof(Player)) as Player;
+        rival.AddStats(rivalPic, "Jerk");
         rival.GetMon(CreateMon((int)Shape.Square, 5));
         rival.GetMon(CreateMon((int)Shape.Line, 5));
-        TurnBased turnBase = new TurnBased();
+        rival.GetMon(CreateMon((int)Shape.Circle, 1));
+        //Debug.Log("Created Rival");
+        TurnBased turnBase = gameObject.AddComponent(typeof(TurnBased)) as TurnBased;
+        //Debug.Log("Created TurnBased");
         turnBase.StartBattle(player, rival);
     }
     enum Shape{
@@ -51,44 +56,43 @@ public class World : MonoBehaviour
     }
     public Monster CreateCircle(int level){
         Move[] moveSet = new Move[4];
-        AddMove(new Move((int)Move.MoveType.SelfDestruct), moveSet);
-        return new Monster(3, 1, 1, 3, "Circle", circlePic, (int)Shape.Circle, level, moveSet);
+        AddMove(CreateMove((int)Move.MoveType.SelfDestruct), moveSet);
+        return CreateMon(3, 1, 1, 3, "Circle", circlePic, (int)Shape.Circle, level, moveSet);
     }
     public Monster CreateSquare(int level){
         Move[] moveSet = new Move[4];
-        AddMove(new Move((int)Move.MoveType.ShieldBash), moveSet);
-        AddMove(new Move((int)Move.MoveType.Kick), moveSet);
-        AddMove(new Move((int)Move.MoveType.Punch), moveSet);
-        return new Monster(2, 3, 3, 1, "Square", squarePic, (int)Shape.Square, level, moveSet);
+        AddMove(CreateMove((int)Move.MoveType.ShieldBash), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Kick), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Punch), moveSet);
+        return CreateMon(2, 3, 3, 1, "Square", squarePic, (int)Shape.Square, level, moveSet);
     }
     public Monster CreateTriangle(int level){
         Move[] moveSet = new Move[4];
-        AddMove(new Move((int)Move.MoveType.Splash), moveSet);
-        AddMove(new Move((int)Move.MoveType.Kick), moveSet);
-        AddMove(new Move((int)Move.MoveType.Punch), moveSet);
-        return new Monster(2, 2, 2, 2, "Triangle", trianglePic, (int)Shape.Triangle, level, moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Splash), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Kick), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Punch), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Stall), moveSet);
+        return CreateMon(2, 2, 2, 2, "Triangle", trianglePic, (int)Shape.Triangle, level, moveSet);
     }
     public Monster CreateLine(int level){
         Move[] moveSet = new Move[4];
-        AddMove(new Move((int)Move.MoveType.ShieldBash), moveSet);
-        AddMove(new Move((int)Move.MoveType.Stall), moveSet);
-        AddMove(new Move((int)Move.MoveType.Splash), moveSet);
-        return new Monster(1, 5, 3, 1, "Line", linePic, (int)Shape.Line, level, moveSet);
+        AddMove(CreateMove((int)Move.MoveType.ShieldBash), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Stall), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Splash), moveSet);
+        return CreateMon(1, 5, 3, 1, "Line", linePic, (int)Shape.Line, level, moveSet);
     }
     public Monster CreateHexagon(int level){
         Move[] moveSet = new Move[4];
-        AddMove(new Move((int)Move.MoveType.SelfDestruct), moveSet);
-        AddMove(new Move((int)Move.MoveType.Kick), moveSet);
-        AddMove(new Move((int)Move.MoveType.Punch), moveSet);
-        AddMove(new Move((int)Move.MoveType.Stall), moveSet);
-        return new Monster(2, 2, 2, 5, "Hexagon", hexagonPic, (int)Shape.Hexagon, level, moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Kick), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Punch), moveSet);
+        return CreateMon(2, 2, 2, 5, "Hexagon", hexagonPic, (int)Shape.Hexagon, level, moveSet);
     }
     public Monster CreateOctagon(int level){
         Move[] moveSet = new Move[4];
-        AddMove(new Move((int)Move.MoveType.UltimateAnnihilation), moveSet);
-        AddMove(new Move((int)Move.MoveType.Kick), moveSet);
-        AddMove(new Move((int)Move.MoveType.Punch), moveSet);
-        return new Monster(5, 3, 3, 1, "Octagon", octagonPic, (int)Shape.Octagon, level, moveSet);
+        AddMove(CreateMove((int)Move.MoveType.UltimateAnnihilation), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Kick), moveSet);
+        AddMove(CreateMove((int)Move.MoveType.Punch), moveSet);
+        return CreateMon(5, 3, 3, 1, "Octagon", octagonPic, (int)Shape.Octagon, level, moveSet);
     }
     public void AddMove(Move move, Move[] moves){
         for(int i = 0; i < moves.Length; i++){
@@ -97,5 +101,15 @@ public class World : MonoBehaviour
                 break;
             }
         }
+    }
+    public Move CreateMove(int type){
+        Move temp = gameObject.AddComponent(typeof(Move)) as Move;
+        temp.AddStats(type);
+        return temp;
+    }
+    public Monster CreateMon(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl, Move[] moveSet){
+        Monster temp = gameObject.AddComponent(typeof(Monster)) as Monster;
+        temp.AddStats(attackGrow, defenseGrow, hpGrow, speedGrow, nick, picture, typeOf, lvl, moveSet);
+        return temp;
     }
 }
