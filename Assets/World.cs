@@ -10,12 +10,15 @@ public class World : MonoBehaviour
         player.AddStats(playerPic, "Red");
         player.GetMon(CreateMon((int)Shape.Triangle, 5));
         player.GetMon(CreateMon((int)Shape.Hexagon, 5));
+        player.GetMon(CreateMon((int)Shape.Octagon, 5));
         //Debug.Log("Created Player");
         Player rival = gameObject.AddComponent(typeof(Player)) as Player;
         rival.AddStats(rivalPic, "Jerk");
+        rival.GetMon(CreateMon((int)Shape.Triangle, 5));
+        rival.GetMon(CreateMon((int)Shape.Triangle, 5));
         rival.GetMon(CreateMon((int)Shape.Square, 5));
         rival.GetMon(CreateMon((int)Shape.Line, 5));
-        rival.GetMon(CreateMon((int)Shape.Circle, 1));
+        rival.GetMon(CreateMon((int)Shape.Circle, 5));
         //Debug.Log("Created Rival");
         TurnBased turnBase = gameObject.AddComponent(typeof(TurnBased)) as TurnBased;
         //Debug.Log("Created TurnBased");

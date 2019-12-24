@@ -56,6 +56,7 @@ public class TurnBased : MonoBehaviour
             Debug.Log(rival.nickname + "s Pokemon " + enemy.nickname + " used " + Enum.GetName(typeof(Move.MoveType), eneMove.type));
         }
 
+        bool deceased = false;
         if(mon.hp <= 0){
             if(player.NextAlive() == -1){
                 return false;
@@ -64,6 +65,7 @@ public class TurnBased : MonoBehaviour
             mon = player.NextMonster();
             Debug.Log(player.nickname + "s Pokemon " + mon.nickname + " has joined the battle");
             Debug.Log(mon.Stats());
+            deceased = true;
         }
 
         if(enemy.hp <= 0){
@@ -74,8 +76,15 @@ public class TurnBased : MonoBehaviour
             enemy = rival.NextMonster();
             Debug.Log(rival.nickname + "s Pokemon " + enemy.nickname + " has joined the battle");
             Debug.Log(enemy.Stats());
+            deceased = true;
         }
-        playerTurn = !playerTurn;
+
+        if(deceased){
+            SetTurnOrder(mon, enemy);
+        }
+        else{
+            playerTurn = !playerTurn;
+        }
         return true;
     }
 }
