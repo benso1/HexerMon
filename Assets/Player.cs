@@ -7,7 +7,7 @@ public class Player : MonoBehaviour
     public Monster[] monsters;
     public Sprite playerSprite;
     public string nickname;
-    Player(Sprite playerPic, string nick){
+    public Player(Sprite playerPic, string nick){
         playerSprite = playerPic;
         monsters = new Monster[6];
         nickname = nick;
@@ -18,6 +18,14 @@ public class Player : MonoBehaviour
             return true;
         }
         return false;
+    }
+    public void GetMon(Monster monstrous){
+        for(int i = 0; i < 6; i++){
+            if(monsters[i] == null){
+                monsters[i] = monstrous;
+                break;
+            }
+        }
     }
     public int NextAlive(){
         for(int i = 0; i < 6; i++){

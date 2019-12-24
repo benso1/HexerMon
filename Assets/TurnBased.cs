@@ -9,7 +9,7 @@ public class TurnBased : MonoBehaviour
     public Monster mon;
     public Player player;
     public Player rival;
-    IEnumerable StartBattle(Player playerChar, Player enemyChar){
+    public IEnumerable StartBattle(Player playerChar, Player enemyChar){
         rival = enemyChar;
         enemy = rival.NextMonster();
         player = playerChar;
@@ -18,6 +18,7 @@ public class TurnBased : MonoBehaviour
         while(TakeTurn()){
             yield return new WaitForSeconds(2f);
         }
+        Debug.Log("Battle Finished");
     }
     public void SetTurnOrder(Monster playerMon, Monster enemyMon){
         if(mon.speed >= enemy.speed){
@@ -43,19 +44,23 @@ public class TurnBased : MonoBehaviour
             if(player.NextAlive() == -1){
                 return false;
             }
+            Debug.Log(player.nickname + "s Pokemon" + mon.nickname + " has been KO'd");
             mon = player.NextMonster();
+            Debug.Log(player.nickname + "s Pokemon" + mon.nickname + " has joined the battle");
         }
 
         if(enemy.hp < 0){
             if(rival.NextAlive() == -1){
                 return false;
             }
+            Debug.Log(rival.nickname + "s Pokemon" + enemy.nickname + " has been KO'd");
             enemy = rival.NextMonster();
+            Debug.Log(rival.nickname + "s Pokemon" + enemy.nickname + " has joined the battle");
         }
         Debug.Log("");
-        Debug.Log(player.nickname + "s Pokemon" + mon.nickname);
+        Debug.Log(player.nickname + "s Pokemon " + mon.nickname);
         Debug.Log(mon.Stats());
-        Debug.Log(rival.nickname + "s Pokemon" + mon.nickname);
+        Debug.Log(rival.nickname + "s Pokemon " + enemy.nickname);
         Debug.Log(enemy.Stats());
         playerTurn = !playerTurn;
         return true;
