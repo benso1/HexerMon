@@ -129,4 +129,14 @@ public class Monster : MonoBehaviour
         }
         return moves[moveNum];
     }
+    public void TakeDamage(int dmg){
+        int block = defense / 2;
+        int taken = dmg - block;
+        if(taken > 0){
+            hp = hp - taken;
+        }
+    }
+    public void TakeSelfDamage(float selfDamage){
+        hp = (int)(hp - (hpGrowth * level * selfDamage));
+    }
 }

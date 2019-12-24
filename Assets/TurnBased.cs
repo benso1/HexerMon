@@ -32,7 +32,7 @@ public class TurnBased : MonoBehaviour
             //Get Move
         }
         else{
-            UseMove(enemy.GetRandomMove(), enemy, mon);
+            enemy.GetRandomMove().UseMove(enemy, mon);
         }
 
         bool deceased = false;
@@ -60,8 +60,5 @@ public class TurnBased : MonoBehaviour
         }
             
         return true;
-    }
-    public void UseMove(Move move, Monster good, Monster bad){
-        //Activate the effects of the moves
     }
 }
