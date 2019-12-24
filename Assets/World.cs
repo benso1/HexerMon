@@ -32,8 +32,8 @@ public class World : MonoBehaviour
         Hexagon = 4,
         Octagon = 5
     }
-    public Sprite playerPic;
-    public Sprite rivalPic;
+    public SpriteRenderer playerPic;
+    public SpriteRenderer rivalPic;
     public Sprite circlePic;
     public Sprite squarePic;
     public Sprite trianglePic;

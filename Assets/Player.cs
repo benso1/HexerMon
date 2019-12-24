@@ -5,14 +5,14 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Monster[] monsters;
-    public Sprite playerSprite;
+    public SpriteRenderer playerSprite;
     public string nickname;
-    public Player(Sprite playerPic, string nick){
+    public Player(SpriteRenderer playerPic, string nick){
         playerSprite = playerPic;
         monsters = new Monster[6];
         nickname = nick;
     }
-    public void AddStats(Sprite playerPic, string nick){
+    public void AddStats(SpriteRenderer playerPic, string nick){
         playerSprite = playerPic;
         monsters = new Monster[6];
         nickname = nick;

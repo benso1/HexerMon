@@ -10,6 +10,10 @@ public class TurnBased : MonoBehaviour
     public Monster mon;
     public Player player;
     public Player rival;
+    public float playerX = -1.75f;
+    public float playerY = -0.75f;
+    public float rivalX = 1.75f;
+    public float rivalY = 0.75f;
     public void StartBattle(Player playerChar, Player enemyChar){
         //Debug.Log("Entered Function");
         rival = enemyChar;
@@ -18,6 +22,8 @@ public class TurnBased : MonoBehaviour
         player = playerChar;
         mon = player.NextMonster();
         //Debug.Log("Got Player Monster");
+        SetPosition(player, playerX, playerY);
+        SetPosition(rival, rivalX, rivalY);
         SetTurnOrder(mon, enemy);
         //Debug.Log("Got Turn Order");
         while(TakeTurn()){
@@ -86,5 +92,11 @@ public class TurnBased : MonoBehaviour
             playerTurn = !playerTurn;
         }
         return true;
+    }
+    public void SetPosition(Player player, float x, float y){
+        player.playerSprite.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
+    }
+    public void SetPosition(Monster mon, float x, float y){
+        //mon.playerSprite.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
     }
 }
