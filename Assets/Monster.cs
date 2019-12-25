@@ -12,13 +12,13 @@ public class Monster : MonoBehaviour
     public int defenseGrowth;
     public int hpGrowth;
     public int speedGrowth;
-    public Sprite pic;
+    public SpriteRenderer pic;
     public int type;
     public string nickname;
     public int level;
     public int exp;
     public Move[] moves;
-    public Monster(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl, Move[] moveSet){
+    public Monster(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, SpriteRenderer picture, int typeOf, int lvl, Move[] moveSet){
         SetGrowth(attackGrow, defenseGrow, hpGrow, speedGrow);
         nickname = nick;
         pic = picture;
@@ -27,7 +27,7 @@ public class Monster : MonoBehaviour
         exp = 0;
         moves = moveSet;
     }
-    public void AddStats(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl, Move[] moveSet){
+    public void AddStats(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, SpriteRenderer picture, int typeOf, int lvl, Move[] moveSet){
         SetGrowth(attackGrow, defenseGrow, hpGrow, speedGrow);
         nickname = nick;
         pic = picture;

@@ -1,15 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class World : MonoBehaviour
 {
+    private IEnumerator coroutine;
+    public float turnTimer = 1.5f;
+    
+    public float playerHX;
+    public float playerHY;
+    public float rivalHX;
+    public float rivalHY;
     void Start(){
         //Debug.Log("Can Write");
         Player player = gameObject.AddComponent(typeof(Player)) as Player;
         player.AddStats(playerPic, "Red");
-        player.GetMon(CreateMon((int)Shape.Triangle, 5));
+        player.GetMon(CreateMon((int)Shape.Circle, 5));
         player.GetMon(CreateMon((int)Shape.Hexagon, 5));
+        player.GetMon(CreateMon((int)Shape.Triangle, 5));
         player.GetMon(CreateMon((int)Shape.Octagon, 5));
         //Debug.Log("Created Player");
         Player rival = gameObject.AddComponent(typeof(Player)) as Player;
@@ -22,7 +31,8 @@ public class World : MonoBehaviour
         //Debug.Log("Created Rival");
         TurnBased turnBase = gameObject.AddComponent(typeof(TurnBased)) as TurnBased;
         //Debug.Log("Created TurnBased");
-        turnBase.StartBattle(player, rival);
+        coroutine = turnBase.StartBattle(player, rival, turnTimer, playCharName, enemCharName, hpBackPic, hpFrontPic, playerHX, playerHY, rivalHX, rivalHY);
+        StartCoroutine(coroutine);
     }
     enum Shape{
         Circle = 0,
@@ -33,13 +43,17 @@ public class World : MonoBehaviour
         Octagon = 5
     }
     public SpriteRenderer playerPic;
+    public SpriteRenderer hpBackPic;
+    public SpriteRenderer hpFrontPic;
     public SpriteRenderer rivalPic;
-    public Sprite circlePic;
-    public Sprite squarePic;
-    public Sprite trianglePic;
-    public Sprite linePic;
-    public Sprite hexagonPic;
-    public Sprite octagonPic;
+    public SpriteRenderer circlePic;
+    public SpriteRenderer squarePic;
+    public SpriteRenderer trianglePic;
+    public SpriteRenderer linePic;
+    public SpriteRenderer hexagonPic;
+    public SpriteRenderer octagonPic;
+    public Text playCharName;
+    public Text enemCharName;
     public Monster CreateMon(int type, int level){
         switch(type){
             case (int)Shape.Circle:
@@ -110,9 +124,9 @@ public class World : MonoBehaviour
         temp.AddStats(type);
         return temp;
     }
-    public Monster CreateMon(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, Sprite picture, int typeOf, int lvl, Move[] moveSet){
+    public Monster CreateMon(int attackGrow, int defenseGrow, int hpGrow, int speedGrow, string nick, SpriteRenderer picture, int typeOf, int lvl, Move[] moveSet){
         Monster temp = gameObject.AddComponent(typeof(Monster)) as Monster;
-        temp.AddStats(attackGrow, defenseGrow, hpGrow, speedGrow, nick, picture, typeOf, lvl, moveSet);
+        temp.AddStats(attackGrow, defenseGrow, hpGrow, speedGrow, nick, Instantiate(picture), typeOf, lvl, moveSet);
         return temp;
     }
 }

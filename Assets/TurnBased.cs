@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.UI;
 
 public class TurnBased : MonoBehaviour
 {
@@ -14,28 +15,70 @@ public class TurnBased : MonoBehaviour
     public float playerY = -0.75f;
     public float rivalX = 1.75f;
     public float rivalY = 0.75f;
-    public void StartBattle(Player playerChar, Player enemyChar){
-        //Debug.Log("Entered Function");
+    public float playerMonX = -1f;
+    public float playerMonY = -0.5f;
+    public float enemyMonX = 1f;
+    public float enemyMonY = 0.5f;
+    public float offScreenX = -3f;
+    public float offScreenY = 2f;
+    public float turnTime = 1.5f;
+    public Text playerName;
+    public Text rivalName;
+    public SpriteRenderer pHPBack;
+    public SpriteRenderer pHPFront;
+    public SpriteRenderer rHPBack;
+    public SpriteRenderer rHPFront;
+    public float playerHPX;
+    public float playerHPY;
+    public float rivalHPX;
+    public float rivalHPY;
+    public IEnumerator StartBattle(Player playerChar, Player enemyChar, float turnTimer, 
+        Text playerText, Text rivalText, SpriteRenderer hpBack, SpriteRenderer hpFront,
+        float playerHX, float playerHY, float rivalHX, float rivalHY){
+        playerName = playerText;
+        rivalName = rivalText;
+        turnTime = turnTimer;
+        pHPBack = Instantiate(hpBack);
+        pHPFront = Instantiate(hpFront);
+        rHPBack = Instantiate(hpBack);
+        rHPFront = Instantiate(hpFront);
         rival = enemyChar;
-        enemy = rival.NextMonster();
-        //Debug.Log("Got Rival Monster");
         player = playerChar;
-        mon = player.NextMonster();
-        //Debug.Log("Got Player Monster");
-        SetPosition(player, playerX, playerY);
-        SetPosition(rival, rivalX, rivalY);
+        playerHPX = playerHX;
+        playerHPY = playerHY;
+        rivalHPX = rivalHX;
+        rivalHPY = rivalHY;
+
+        SetupRival();
+        SetupPlayer();
         SetTurnOrder(mon, enemy);
-        //Debug.Log("Got Turn Order");
+
         while(TakeTurn()){
-            //yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(turnTimer);
         }
+
         if(player.NextAlive() == -1){
             Debug.Log(player.nickname + " Loses");
         }
         else if(enemyChar.NextAlive() == -1){
             Debug.Log(enemyChar.nickname + " Loses");
         }
-        //Debug.Log("Battle Finished");
+    }
+    public void SetupRival(){
+        enemy = rival.NextMonster();
+        SetPosition(rival, rivalX, rivalY);
+        SetPosition(enemy, enemyMonX, enemyMonY);
+        rivalName.text = enemy.nickname;
+        SetPosition(rHPBack, rivalHPX, rivalHPY);
+        SetPosition(rHPFront, rivalHPX, rivalHPY);
+    }
+    public void SetupPlayer(){
+        mon = player.NextMonster();
+        SetPosition(player, playerX, playerY);
+        SetPosition(mon, playerMonX, playerMonY);
+        playerName.text = mon.nickname;
+        SetPosition(pHPBack, playerHPX, playerHPY);
+        SetPosition(pHPFront, playerHPX, playerHPY);
     }
     public void SetTurnOrder(Monster playerMon, Monster enemyMon){
         if(mon.speed >= enemy.speed){
@@ -68,7 +111,10 @@ public class TurnBased : MonoBehaviour
                 return false;
             }
             Debug.Log(player.nickname + "s Pokemon " + mon.nickname + " has been KO'd");
+            SetPosition(mon, offScreenX, offScreenY);
             mon = player.NextMonster();
+            SetPosition(mon, playerMonX, playerMonY);
+            playerName.text = mon.nickname;
             Debug.Log(player.nickname + "s Pokemon " + mon.nickname + " has joined the battle");
             Debug.Log(mon.Stats());
             deceased = true;
@@ -79,7 +125,10 @@ public class TurnBased : MonoBehaviour
                 return false;
             }
             Debug.Log(rival.nickname + "s Pokemon " + enemy.nickname + " has been KO'd");
+            SetPosition(enemy, offScreenX, offScreenY);
             enemy = rival.NextMonster();
+            SetPosition(enemy, enemyMonX, enemyMonY);
+            rivalName.text = enemy.nickname;
             Debug.Log(rival.nickname + "s Pokemon " + enemy.nickname + " has joined the battle");
             Debug.Log(enemy.Stats());
             deceased = true;
@@ -94,9 +143,12 @@ public class TurnBased : MonoBehaviour
         return true;
     }
     public void SetPosition(Player player, float x, float y){
-        player.playerSprite.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
+        SetPosition(player.playerSprite, x, y);
     }
     public void SetPosition(Monster mon, float x, float y){
-        //mon.playerSprite.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
+        SetPosition(mon.pic, x, y);
+    }
+    public void SetPosition(SpriteRenderer renderer, float x, float y){
+        renderer.transform.SetPositionAndRotation(new Vector3(x, y, 0), Quaternion.identity);
     }
 }
